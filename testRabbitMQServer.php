@@ -1,15 +1,42 @@
 #!/usr/bin/php
 <?php
+echo "ServerStarted!".PHP_EOL;
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
+require_once("dbFunctions.php.inc");
 
 function doLogin($username,$password)
 {
-    // lookup username in databas
-    // check password
-    return true;
-    //return false if not valid
+	echo "HelloLogin!".PHP_EOL;
+	$login = new connectdb();
+
+	$output = $login->validateLogin($username,$password);
+
+	if($output){
+		echo "login successful".PHP_EOL;
+		return true;
+	}
+	else{
+		echo "login failed".PHP_EOL;
+		return false;
+	}
+}
+
+function doRegister($username,$password){
+	echo "Hello!".PHP_EOL;
+	$register = new connectdb();
+
+	$output = $register->register($username,$password);
+
+	if($output){
+		echo "registration successful".PHP_EOL;
+		return true;
+	}
+	else{
+		echo "registration failed".PHP_EOL;
+		return false;
+	}
 }
 
 function requestProcessor($request)
@@ -24,6 +51,8 @@ function requestProcessor($request)
   {
     case "login":
       return doLogin($request['username'],$request['password']);
+    case "register":
+      return doRegister($request['username'],$request['password']);
     case "validate_session":
       return doValidate($request['sessionId']);
   }
