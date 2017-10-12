@@ -40,16 +40,24 @@ public function register($username,$password)
 {	
 	$un = $this->connectdb->real_escape_string($username);
 	$pw = $this->connectdb->real_escape_string($password);
+<<<<<<< HEAD
 	$statement = "insert into users (screenname, password) values ('$un', '$pw');";
 	$this->connectdb->query($statement);			
 	$statement2 = "select * from users where screenname = '$un';";
 	$response = $this->connectdb->query($statement2);
+=======
+	$statement = "insert into users (screenname, password) values ($un, $pw);";
+	$response = $this->connectdb->query($statement);
+>>>>>>> ffd95f06be242307125e83aaddb09e43fd7eeea9
 	if ($response){
 		return 1;
 	}
 	else{
+<<<<<<< HEAD
 		
 		
+=======
+>>>>>>> ffd95f06be242307125e83aaddb09e43fd7eeea9
 		return 0;	
 	}
 }
