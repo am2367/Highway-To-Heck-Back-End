@@ -8,10 +8,7 @@ require_once("dbFunctions.php.inc");
 
 function doLogin($username,$password)
 {
-<<<<<<< HEAD
-=======
 	echo "HelloLogin!".PHP_EOL;
->>>>>>> ffd95f06be242307125e83aaddb09e43fd7eeea9
 	$login = new connectdb();
 
 	$output = $login->validateLogin($username,$password);
@@ -38,10 +35,6 @@ function doRegister($username,$password){
 	}
 	else{
 		echo "registration failed".PHP_EOL;
-<<<<<<< HEAD
-		echo ($output).PHP_EOL;
-=======
->>>>>>> ffd95f06be242307125e83aaddb09e43fd7eeea9
 		return false;
 	}
 }
@@ -66,14 +59,8 @@ function requestProcessor($request)
   return array("returnCode" => '0', 'message'=>"Server received request and processed");
 }
 
-<<<<<<< HEAD
-//create new server
-$server = new rabbitMQServer("testRabbitMQ.ini","testServer");
-//process the request
-=======
 $server = new rabbitMQServer("testRabbitMQ.ini","testServer");
 
->>>>>>> ffd95f06be242307125e83aaddb09e43fd7eeea9
 $server->process_requests('requestProcessor');
 exit();
 ?>
