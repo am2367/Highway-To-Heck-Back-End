@@ -60,7 +60,7 @@ function requestProcessor($request)
 }
 
 //create new server
-$server = new rabbitMQServer("testRabbitMQ.ini","testServer");
+$server = new rabbitMQServer("testRabbitMQ_DB.ini","testServer");
 //process the request
 $server->process_requests('requestProcessor');
 exit();
