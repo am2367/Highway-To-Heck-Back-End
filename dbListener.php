@@ -50,19 +50,24 @@ function requestProcessor($request)
   switch ($request['type'])
   {
     case "login":
-      return doLogin($request['username'],$request['password']);
+      $status = doLogin($request['username'],$request['password']);
+      break;
     case "register":
-      return doRegister($request['username'],$request['password']);
+      $status = doRegister($request['username'],$request['password']);
+      break;
     case "validate_session":
-      return doValidate($request['sessionId']);
+      $status = doValidate($request['sessionId']);
+      break;
   }
-  return array("returnCode" => '0', 'message'=>"Server received request and processed");
+ 
+  return array("status" => $status, 'message'=>"Server received request and processed");
 }
 
 //create new server
 $server = new rabbitMQServer("testRabbitMQ_DB.ini","testServer");
 //process the request
 $server->process_requests('requestProcessor');
+
 exit();
 ?>
 
