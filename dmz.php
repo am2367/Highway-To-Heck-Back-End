@@ -4,8 +4,13 @@ echo "ServerStarted!".PHP_EOL;
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
+require_once("dmzFunctions.php");
 
-/*function requestProcessor($request)
+function listListings($request){
+	return getListings($request);
+}
+
+function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
   var_dump($request);
@@ -15,18 +20,19 @@ require_once('rabbitMQLib.inc');
   }
   switch ($request['type'])
   {
-    case "login":
-      return doLogin($request['username'],$request['password']);
-    case "register":
-      return doRegister($request['username'],$request['password']);
-    case "validate_session":
-      return doValidate($request['sessionId']);
+    case "listings":
+      $data = listListings($request);
+      break;
   }
-  return array("returnCode" => '0', 'message'=>"Server received request and processed");
-}*/
+  ///return $data;
+  return $data;
+}
 
+//create new server
 $server = new rabbitMQServer("testRabbitMQ_DMZ.ini","testServer");
-
+//process the request
 $server->process_requests('requestProcessor');
+
 exit();
 ?>
+

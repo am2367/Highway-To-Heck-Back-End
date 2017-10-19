@@ -15,10 +15,30 @@ function createClient($type, $username, $password){
 	}
 
 	$request = array();
-	$request['type'] = $type;//$_GET["type"];
-	$request['username'] = $username;//$_GET["username"];
-	$request['password'] = $password;//$_GET["password"];
+	$request['type'] = $type;
+	$request['username'] = $username;
+	$request['password'] = $password;
 	$request['message'] = $msg;
+	$response = $client->send_request($request);
+	//$response = $client->publish($request);
+	return $response;
+	echo "client received response: ".PHP_EOL;
+	print_r($response);
+	echo "\n\n";
+
+	echo $argv[0]." END".PHP_EOL;
+}
+function createClientDMZ($type, $zip, $radius, $minPrice, $maxPrice, $make, $model, $year){
+	$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+	$request = array();
+	$request['type'] = $type;
+	$request['zip'] = $zip;
+	$request['radius'] = $radius;
+	$request['minPrice'] = $minPrice;
+	$request['maxPrice'] = $maxPrice;
+	$request['make'] = $make;
+	$request['model'] = $model;
+	$request['year'] = $year;
 	$response = $client->send_request($request);
 	//$response = $client->publish($request);
 	return $response;

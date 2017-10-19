@@ -8,10 +8,24 @@ require_once('rabbitMQLib.inc');
 function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
-  $client = new rabbitMQClient("testRabbitMQ_DB.ini","testServer");
-  $response = $client->send_request($request);
+  switch ($request["type"])
+  {
+	case "login":
+		$client = new rabbitMQClient("testRabbitMQ_DB.ini","testServer");
+		$response = $client->send_request($request);
+	break;
+	case "register":
+		$client = new rabbitMQClient("testRabbitMQ_DB.ini","testServer");
+		$response = $client->send_request($request);
+	break;
+	case "listings":
+		$client = new rabbitMQClient("testRabbitMQ_DMZ.ini","testServer");
+		$response = $client->send_request($request);
+	break;
+  }
+  
   return $response;
-  //return array("returnCode" => '0', 'message'=>"Server received request and processed");
+  //return array("stats" => '0', 'message'=>"Server received request and processed");
 }
 
 $server = new rabbitMQServer("testRabbitMQ.ini","testServer");
