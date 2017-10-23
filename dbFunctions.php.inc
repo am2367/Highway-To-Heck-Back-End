@@ -6,7 +6,7 @@ private $connectdb;
 
 public function __construct()
 {
-	$this->connectdb = new mysqli("127.0.0.1","root","201alex","login");//Your DB info here (localhost, mysql root, mysql pass, database)
+	$this->connectdb = new mysqli("127.0.0.1","root","it490","login");//Your DB info here (localhost, mysql root, mysql pass, database)
 
 	if ($this->connectdb->connect_errno != 0)
 	{
@@ -49,5 +49,77 @@ public function register($username,$password)
 		return 0;	
 	}
 }
+
+public function makes($make)
+{
+	$make = $this->connectdb->real_escape_string($make);
+	$statement = "SELECT ma.name AS make, mo.name AS model FROM models mo
+    			JOIN make_years my on mo.makeyear_id = my.id
+    			JOIN makes ma on ma.id = my.make_id
+    			WHERE ma.name = '$make'
+    			ORDER BY model;";
+	$results = array();
+	while($row = mysql_Fetch_array($statement))
+	{
+		$results[] = array(
+			'make' => $row['make'],
+			'model' => $row['model'],
+		);
+	}
+	$json = json_encode($results);
 }
+	
+public function models($make, $year)
+{
+	$make = $this->connectdb->real_escape_string($make);
+	$year = $this->connectdb->real_escape_string($year);
+	$statement = "SELECT my.year, ma.name AS make, mo.name AS model FROM models mo
+    			JOIN make_years my on mo.makeyear_id = my.id
+    			JOIN makes ma on ma.id = my.make_id
+    			WHERE ma.name = '$make' and my.year = '$year'
+    			ORDER BY model;";
+	$results = array();
+	while($row = mysql_Fetch_array($statement))
+	{
+		$results[] = array(
+			'year' => $row['year'],
+			'make' => $row['make'],
+			'model' => $row['model'],
+		);
+	}
+	$json = json_encode($results);
+}
+	
+public function years($make, $model)
+{
+	$make = $this->connectdb->real_escape_string($make);
+	$model = $this->connectdb->real_escape_string($model);
+	$statement = "SELECT my.year, ma.name AS make, mo.name AS model FROM models mo
+    			JOIN make_years my on mo.makeyear_id = my.id
+    			JOIN makes ma on ma.id = my.make_id
+   			WHERE ma.name = '$make' and mo.name LIKE '$model'
+    			ORDER BY my.year, model;";
+	$results = array();
+	while($row = mysql_Fetch_array($statement))
+	{
+		$results[] = array(
+			'year' => $row['year'],		
+			'make' => $row['make'],
+			'model' => $row['model'],
+		);
+	}
+	$json = json_encode($results);
+}
+	
+
+
+}
+
+
+
+
+
+
+
 ?>
+
