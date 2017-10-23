@@ -45,7 +45,7 @@ function requestProcessor($request)
   var_dump($request);
   if(!isset($request['type']))
   {
-    return "ERROR: unsupported message type";
+    return array('message'=>"ERROR: unsupported message type");
   }
   switch ($request['type'])
   {
@@ -60,7 +60,7 @@ function requestProcessor($request)
       break;
   }
  
-  return array("status" => $status, 'message'=>"Server received request and processed");
+  return array('status' => $status,'message'=>'Server received request and processed');
 }
 
 //create new server
