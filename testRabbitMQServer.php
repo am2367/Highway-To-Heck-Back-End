@@ -8,13 +8,21 @@ require_once('rabbitMQLib.inc');
 function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
-  switch ($request["type"])
+  switch ($request["data"])
   {
 	case "login":
 		$client = new rabbitMQClient("testRabbitMQ_DB.ini","testServer");
 		$response = $client->send_request($request);
 	break;
 	case "register":
+		$client = new rabbitMQClient("testRabbitMQ_DB.ini","testServer");
+		$response = $client->send_request($request);
+	break;
+	case "addToWatchlist":
+		$client = new rabbitMQClient("testRabbitMQ_DB.ini","testServer");
+		$response = $client->send_request($request);
+	break;
+	case "removeFromWatchlist":
 		$client = new rabbitMQClient("testRabbitMQ_DB.ini","testServer");
 		$response = $client->send_request($request);
 	break;

@@ -1,25 +1,23 @@
 <?php
-function getListings($data){
+function getListings($request){
 	
-	/*$xml = new SimpleXMLElement('<root/>');
-	array_walk_recursive($data, array ($xml, 'addChild'));
-	print $xml->asXML();
-	$url = "https://api-st.cars.com/InventorySearchService/1.0/rest/partner/inventory/search";
- 
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml");
-			$output = curl_exec($ch);
-			print $output;
-			curl_close($ch);*/
-	$xml = simplexml_load_file('responseData.xml');
-	$json = json_encode($xml);
-	//print_r($json);
-	$array = json_decode($json, true);
-	//print_r($xml);
-	return $array;
+	$url = "https://jobs.github.com/positions.json?";
+	$data = http_build_query($request);
+
+	// Get cURL resource
+	$curl = curl_init();
+	// Set some options - we are passing in a useragent too here
+	curl_setopt_array($curl, array(
+	    CURLOPT_RETURNTRANSFER => 1,
+	    CURLOPT_URL => $url . $data,
+	    CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+	));
+	// Send the request & save response to $resp
+	$resp = curl_exec($curl);
+	// Close request to clear up some resources
+	curl_close($curl);
+	print_r($resp);
+	//$json = json_encode($resp);
+	return $resp;
 }
 ?>

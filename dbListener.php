@@ -23,7 +23,6 @@ function doLogin($username,$password)
 }
 
 function doRegister($username,$password){
-	echo "Hello!".PHP_EOL;
 	$register = new connectdb();
 
 	$output = $register->register($username,$password);
@@ -38,16 +37,46 @@ function doRegister($username,$password){
 		return false;
 	}
 }
+function doAddToWatchlist($listingID){
+	$add = new connectdb();
+
+	$output = $add->addToWatchlist($listingID);
+
+	if($output){
+		echo "Added Successfully!".PHP_EOL;
+		return true;
+	}
+	else{
+		echo "Error Adding!".PHP_EOL;
+		echo ($output).PHP_EOL;
+		return false;
+	}
+}
+function doRemoveFromWatchlist($listingID){
+	$add = new connectdb();
+
+	$output = $add->addToWatchlist($listingID);
+
+	if($output){
+		echo "Removed Successfully!".PHP_EOL;
+		return true;
+	}
+	else{
+		echo "Error Removing!".PHP_EOL;
+		echo ($output).PHP_EOL;
+		return false;
+	}
+}
 
 function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
   var_dump($request);
-  if(!isset($request['type']))
+  if(!isset($request['data']))
   {
     return array('message'=>"ERROR: unsupported message type");
   }
-  switch ($request['type'])
+  switch ($request['data'])
   {
     case "login":
       $status = doLogin($request['username'],$request['password']);
@@ -57,6 +86,12 @@ function requestProcessor($request)
       break;
     case "validate_session":
       $status = doValidate($request['sessionId']);
+      break;
+    case "addToWatchlist":
+      $status = doAddToWatchlist($request['listingID']);
+      break;
+    case "removeFromWatchlist":
+      $status = doRemoveFromWatchlist($request['listingID']);
       break;
   }
  

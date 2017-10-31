@@ -49,5 +49,13 @@ public function register($username,$password)
 		return 0;	
 	}
 }
+public function addToWatchlist($listingID)
+{	
+	return 1;
+}
+public function removeFromWatchlist($listingID)
+{	
+	return 1;
+}
 }
 ?>
