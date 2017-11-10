@@ -15,8 +15,8 @@ public function __construct()
 	}
 	echo "correctly connected to database".PHP_EOL;
 }
-
-public function validateLogin($username,$password)
+//Not currently in use
+/*public function validateLogin($username,$password)
 {
 	$un = $this->connectdb->real_escape_string($username);
 	$pw = $this->connectdb->real_escape_string($password);
@@ -34,13 +34,14 @@ public function validateLogin($username,$password)
 		echo "passwords did not match for $username".PHP_EOL;
 	}
 	return 0;//no users matched username
-}
+}*/
 //Register user
-public function register($username,$password)
+public function register($username,$password, $email)
 {	
 	$un = $this->connectdb->real_escape_string($username);
 	$pw = $this->connectdb->real_escape_string($password);
-	$statement = "INSERT INTO users(screenname, password) VALUES ('$un', '$pw');";
+	$email = $this->connectdb->real_escape_string($email);
+	$statement = "INSERT INTO users(screenname, password) VALUES ('$un', '$pw','$email');";
 	$response = $this->connectdb->query($statement);
 	if ($response){
 		return 1;
@@ -49,13 +50,43 @@ public function register($username,$password)
 		return 0;	
 	}
 }
-public function addToWatchlist($listingID)
+//add listing for given user
+public function addToWatchlist($user, $listingID)
 {	
-	return 1;
+	$statement = "INSERT INTO userWatchList(user, listingID) VALUES ('$user', '$listingID');";
+	$response = $this->connectdb->query($statement);
+	if ($response){
+		return 1;
+	}
+	else{
+		return 0;	
+	}
 }
-public function removeFromWatchlist($listingID)
+//remove listing for given user
+public function removeFromWatchlist($user, $listingID)
 {	
-	return 1;
+	$statement = "DELETE FROM userWatchList WHERE user='$user' AND listingID='$listingID';";
+	$response = $this->connectdb->query($statement);
+	if ($response){
+		return 1;
+	}
+	else{
+		return 0;	
+	}
+}
+//return all listings for given user
+public function retrieveFromWatchlist($user)
+{	
+	$statement = "SELECT listingID FROM userWatchList WHERE user='$user'";
+	$query = $this->connectdb->query($statement);
+	$response = $query->fetch_all();
+	if ($response){
+		return $response;
+	}
+	else{
+		return 0;
+		
+	}
 }
 }
 ?>

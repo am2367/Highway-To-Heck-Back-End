@@ -34,13 +34,14 @@ function doRegister($username,$password){
 	else{
 		echo "registration failed".PHP_EOL;
 		echo ($output).PHP_EOL;
+		echo ($output).PHP_EOL;
 		return false;
 	}
 }
-function doAddToWatchlist($listingID){
+function doAddToWatchlist($user, $listingID){
 	$add = new connectdb();
 
-	$output = $add->addToWatchlist($listingID);
+	$output = $add->addToWatchlist($user, $listingID);
 
 	if($output){
 		echo "Added Successfully!".PHP_EOL;
@@ -52,10 +53,10 @@ function doAddToWatchlist($listingID){
 		return false;
 	}
 }
-function doRemoveFromWatchlist($listingID){
-	$add = new connectdb();
+function doRemoveFromWatchlist($user, $listingID){
+	$remove = new connectdb();
 
-	$output = $add->addToWatchlist($listingID);
+	$output = $remove->removeFromWatchlist($user, $listingID);
 
 	if($output){
 		echo "Removed Successfully!".PHP_EOL;
@@ -64,6 +65,21 @@ function doRemoveFromWatchlist($listingID){
 	else{
 		echo "Error Removing!".PHP_EOL;
 		echo ($output).PHP_EOL;
+		return false;
+	}
+}
+function doRetrieveFromWatchlist($user){
+	$retrieve = new connectdb();
+
+	$output = $retrieve->retrieveFromWatchlist($user);
+
+	if($output){
+		echo "Retrieved Watchlist Listings!".PHP_EOL;
+		echo  var_dump($output).PHP_EOL;
+		return $output;
+	}
+	else{
+		echo "No listings retrieved!".PHP_EOL;
 		return false;
 	}
 }
@@ -82,16 +98,19 @@ function requestProcessor($request)
       $status = doLogin($request['username'],$request['password']);
       break;
     case "register":
-      $status = doRegister($request['username'],$request['password']);
+      $status = doRegister($request['username'],$request['password'],$request['email']);
       break;
     case "validate_session":
       $status = doValidate($request['sessionId']);
       break;
     case "addToWatchlist":
-      $status = doAddToWatchlist($request['listingID']);
+      $status = doAddToWatchlist($request['user'], $request['listingID']);
       break;
     case "removeFromWatchlist":
-      $status = doRemoveFromWatchlist($request['listingID']);
+      $status = doRemoveFromWatchlist($request['user'], $request['listingID']);
+      break;
+    case "getListingsFromWatchlist":
+      $status = doRetrieveFromWatchlist($request['user']);
       break;
   }
  

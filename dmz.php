@@ -19,6 +19,15 @@ function requestProcessor($request)
     case "listings":
       $data = getListings($request);
       break;
+    case "watchlist":
+      $data = getListingsByID($request);
+      break;
+    case "graphData":
+      $data = getGraphData();
+      break;
+    case "getTodaysListings":
+      $data = getTodaysListings();
+      break;
   }
   ///return $data;
   return $data;
