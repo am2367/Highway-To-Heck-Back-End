@@ -6,22 +6,27 @@ require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 require_once("dmzFunctions.php");
 
-function listListings($request){
-	return getListings($request);
-}
-
 function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
   var_dump($request);
-  if(!isset($request['type']))
+  if(!isset($request['data']))
   {
     return "ERROR: unsupported message type";
   }
-  switch ($request['type'])
+  switch ($request['data'])
   {
     case "listings":
-      $data = listListings($request);
+      $data = getListings($request);
+      break;
+    case "watchlist":
+      $data = getListingsByID($request);
+      break;
+    case "graphData":
+      $data = getGraphData();
+      break;
+    case "getTodaysListings":
+      $data = getTodaysListings();
       break;
   }
   ///return $data;
