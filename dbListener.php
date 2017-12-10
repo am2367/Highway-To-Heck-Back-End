@@ -23,6 +23,10 @@ function doLogin($username,$password)
 }
 
 function doRegister($username,$password){
+<<<<<<< HEAD
+=======
+	echo "Hello!".PHP_EOL;
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
 	$register = new connectdb();
 
 	$output = $register->register($username,$password);
@@ -34,6 +38,7 @@ function doRegister($username,$password){
 	else{
 		echo "registration failed".PHP_EOL;
 		echo ($output).PHP_EOL;
+<<<<<<< HEAD
 		echo ($output).PHP_EOL;
 		return false;
 	}
@@ -125,6 +130,8 @@ function doGetSkills($user){
 	}
 	else{
 		echo "No Skills Retreived!".PHP_EOL;
+=======
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
 		return false;
 	}
 }
@@ -133,21 +140,34 @@ function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
   var_dump($request);
+<<<<<<< HEAD
   if(!isset($request['data']))
   {
     return array('message'=>"ERROR: unsupported message type");
   }
   switch ($request['data'])
+=======
+  if(!isset($request['type']))
+  {
+    return array('message'=>"ERROR: unsupported message type");
+  }
+  switch ($request['type'])
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
   {
     case "login":
       $status = doLogin($request['username'],$request['password']);
       break;
     case "register":
+<<<<<<< HEAD
       $status = doRegister($request['username'],$request['password'],$request['email']);
+=======
+      $status = doRegister($request['username'],$request['password']);
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
       break;
     case "validate_session":
       $status = doValidate($request['sessionId']);
       break;
+<<<<<<< HEAD
     case "addToWatchlist":
       $status = doAddToWatchlist($request['user'], $request['listingID']);
       break;
@@ -166,6 +186,8 @@ function requestProcessor($request)
     case "getSkills":
       $status = doGetSkills($request['user']);
       break;
+=======
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
   }
  
   return array('status' => $status,'message'=>'Server received request and processed');

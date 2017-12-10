@@ -6,7 +6,11 @@ private $connectdb;
 
 public function __construct()
 {
+<<<<<<< HEAD
 	$this->connectdb = new mysqli("127.0.0.1","root","201alex","login");//Your DB info here (localhost, mysql root, mysql pass, database)
+=======
+	$this->connectdb = new mysqli("127.0.0.1","root","it490","login");//Your DB info here (localhost, mysql root, mysql pass, database)
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
 
 	if ($this->connectdb->connect_errno != 0)
 	{
@@ -36,12 +40,20 @@ public function validateLogin($username,$password)
 	return 0;//no users matched username
 }
 //Register user
+<<<<<<< HEAD
 public function register($username,$password, $email)
 {	
 	$un = $this->connectdb->real_escape_string($username);
 	$pw = $this->connectdb->real_escape_string($password);
 	$email = $this->connectdb->real_escape_string($email);
 	$statement = "INSERT INTO users(screenname, password) VALUES ('$un', '$pw','$email');";
+=======
+public function register($username,$password)
+{	
+	$un = $this->connectdb->real_escape_string($username);
+	$pw = $this->connectdb->real_escape_string($password);
+	$statement = "INSERT INTO users(screenname, password) VALUES ('$un', '$pw');";
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
 	$response = $this->connectdb->query($statement);
 	if ($response){
 		return 1;
@@ -50,6 +62,7 @@ public function register($username,$password, $email)
 		return 0;	
 	}
 }
+<<<<<<< HEAD
 //add listing for given user
 public function addToWatchlist($user, $listingID)
 {	
@@ -126,3 +139,79 @@ public function getSkills($user)
 
 }
 ?>
+=======
+
+public function makes($make)
+{
+	$make = $this->connectdb->real_escape_string($make);
+	$statement = "SELECT ma.name AS make, mo.name AS model FROM models mo
+    			JOIN make_years my on mo.makeyear_id = my.id
+    			JOIN makes ma on ma.id = my.make_id
+    			WHERE ma.name = '$make'
+    			ORDER BY model;";
+	$results = array();
+	while($row = mysql_Fetch_array($statement))
+	{
+		$results[] = array(
+			'make' => $row['make'],
+			'model' => $row['model'],
+		);
+	}
+	$json = json_encode($results);
+}
+	
+public function models($make, $year)
+{
+	$make = $this->connectdb->real_escape_string($make);
+	$year = $this->connectdb->real_escape_string($year);
+	$statement = "SELECT my.year, ma.name AS make, mo.name AS model FROM models mo
+    			JOIN make_years my on mo.makeyear_id = my.id
+    			JOIN makes ma on ma.id = my.make_id
+    			WHERE ma.name = '$make' and my.year = '$year'
+    			ORDER BY model;";
+	$results = array();
+	while($row = mysql_Fetch_array($statement))
+	{
+		$results[] = array(
+			'year' => $row['year'],
+			'make' => $row['make'],
+			'model' => $row['model'],
+		);
+	}
+	$json = json_encode($results);
+}
+	
+public function years($make, $model)
+{
+	$make = $this->connectdb->real_escape_string($make);
+	$model = $this->connectdb->real_escape_string($model);
+	$statement = "SELECT my.year, ma.name AS make, mo.name AS model FROM models mo
+    			JOIN make_years my on mo.makeyear_id = my.id
+    			JOIN makes ma on ma.id = my.make_id
+   			WHERE ma.name = '$make' and mo.name LIKE '$model'
+    			ORDER BY my.year, model;";
+	$results = array();
+	while($row = mysql_Fetch_array($statement))
+	{
+		$results[] = array(
+			'year' => $row['year'],		
+			'make' => $row['make'],
+			'model' => $row['model'],
+		);
+	}
+	$json = json_encode($results);
+}
+	
+
+
+}
+
+
+
+
+
+
+
+?>
+
+>>>>>>> 88f287cd5bf03d2b9ca2cf6f5ab7ed121890bf04
