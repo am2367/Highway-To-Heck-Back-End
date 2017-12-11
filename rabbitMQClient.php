@@ -5,7 +5,7 @@ require_once('rabbitMQLib.inc');
 
 //create a new rabbitmq client instance for the database server
 function createClient($request){
-	$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+	$client = new rabbitMQClient("rabbitMQ.ini","testServer");
 	if (isset($argv[1]))
 	{
 	  $msg = $argv[1];
@@ -26,7 +26,7 @@ function createClient($request){
 }
 //create a new rabbitmq client instance for the DMZ server
 function createClientDMZ($request){
-	$client = new rabbitMQClient("testRabbitMQ_DMZ.ini","testServer");
+	$client = new rabbitMQClient("rabbitMQ_DMZ.ini","testServer");
 	//send a response request with the data
 	$response = $client->send_request($request);
 	//$response = $client->publish($request);
@@ -39,7 +39,7 @@ function createClientDMZ($request){
 
 //create a new rabbitmq client instance for the backup server
 function createClientBackup($request){
-	$client = new rabbitMQClient("testRabbitMQ_backup.ini","testServer");
+	$client = new rabbitMQClient("rabbitMQ_backup.ini","testServer");
 	//send a response request with the data
 	$response = $client->send_request($request);
 	//$response = $client->publish($request);

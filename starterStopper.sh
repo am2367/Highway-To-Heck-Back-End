@@ -5,7 +5,7 @@
 
 
 #kill processes
-ps -ef | grep testRabbitMQServer.php |grep -v grep | awk '{print $2}' | xargs kill -9
+ps -ef | grep rabbitMQServer.php |grep -v grep | awk '{print $2}' | xargs kill -9
 
 
 ps -ef | grep dmz.php |grep -v grep | awk '{print $2}' | xargs kill -9
@@ -21,7 +21,7 @@ service rabbitmq-server restart
 
 
 #restart the previously killed scripts
-./testRabbitMQServer.php . &
+./rabbitMQServer.php . &
 
 ./dmz.php . &
 
