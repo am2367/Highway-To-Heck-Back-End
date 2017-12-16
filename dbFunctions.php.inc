@@ -1,5 +1,12 @@
 <?php
 
+/*
+handles database functions
+
+@author  Alex Markenzon
+@since   September
+@version 5
+*/
 class connectdb
 {
 private $connectdb;
@@ -16,6 +23,7 @@ public function __construct()
 	echo "correctly connected to database".PHP_EOL;
 }
 
+//validates the user's credentials
 public function validateLogin($username,$password)
 {
 	$un = $this->connectdb->real_escape_string($username);
@@ -74,6 +82,20 @@ public function removeFromWatchlist($user, $listingID)
 		return 0;	
 	}
 }
+
+//remove all listing for given user
+public function clearWatchlist($user)
+{	
+	$statement = "DELETE FROM userWatchList WHERE user='$user'";
+	$response = $this->connectdb->query($statement);
+	if ($response){
+		return 1;
+	}
+	else{
+		return 0;	
+	}
+}
+
 //return all listings for given user
 public function retrieveFromWatchlist($user)
 {	
@@ -88,6 +110,8 @@ public function retrieveFromWatchlist($user)
 		
 	}
 }
+
+//adds a skill to the db
 public function addSkill($user, $skill)
 {	
 	$statement = "INSERT INTO skills(user, skill) VALUES ('$user', '$skill');";
@@ -99,6 +123,8 @@ public function addSkill($user, $skill)
 		return 0;	
 	}
 }
+
+//removes a skill from the db
 public function removeSkill($user, $skill)
 {	
 	$statement = "DELETE FROM skills WHERE user='$user' AND skill='$skill';";
@@ -110,6 +136,8 @@ public function removeSkill($user, $skill)
 		return 0;	
 	}
 }
+
+//retrieves a skill from the db
 public function getSkills($user)
 {	
 	$statement = "SELECT skill FROM skills WHERE user='$user'";
@@ -123,6 +151,8 @@ public function getSkills($user)
 		
 	}
 }
+
+//retrieves the email for the passed user
 public function getEmail($user)
 {	
 	$statement = "SELECT email FROM users WHERE screenname='$user'";

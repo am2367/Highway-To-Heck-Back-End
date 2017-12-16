@@ -1,4 +1,13 @@
 <?php
+
+/*
+handles client/request publisher creation
+
+@author  Alex Markenzon
+@since   September
+@version 5
+*/
+
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');

@@ -1,4 +1,12 @@
 <?php
+/*
+handles dmz functions
+
+@author  Alex Markenzon
+@since   October
+@version 5
+*/
+
 //get all listings
 function getListings($request){
 	
@@ -28,7 +36,7 @@ function getTodaysListings(){
 	$date = date('D M d');
 	$resp = "";
 	$url = "https://jobs.github.com/positions.json?";
-	$todaysListings = a;
+	$todaysListings = array();
 	// Get cURL resource
 	$curl = curl_init();
 	// Set some options - we are passing in a useragent too here
@@ -45,11 +53,14 @@ function getTodaysListings(){
 	for($x = 0; $x < count($respArray); $x++){
 		if(strpos($respArray[$x]['created_at'], $date) !== false){
 			//$todaysListings .= $respArray[$x];
-			if($x == 0){
+			
+			array_push($todaysListings,$respArray[$x]);
+			/*if($x == 0){
 				$todaysListings = $respArray[$x];}					
 			else{
 				print("test");
-				$todaysListings = array_combine($todaysListings, $respArray[$x]);	}	
+				$todaysListings = array_combine($todaysListings, $respArray[$x]);	
+			}	*/
 		}	
 	}
 

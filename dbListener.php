@@ -1,11 +1,21 @@
 #!/usr/bin/php
 <?php
+include("writeLogs.php");
+/*
+handles requests from server to db functions
+
+@author  Alex Markenzon
+@since   September
+@version 5
+*/
+
 echo "ServerStarted!".PHP_EOL;
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 require_once("dbFunctions.php.inc");
 
+//login
 function doLogin($username,$password)
 {
 	$login = new connectdb();
@@ -22,6 +32,7 @@ function doLogin($username,$password)
 	}
 }
 
+//register
 function doRegister($username,$password, $email){
 	$register = new connectdb();
 
@@ -37,6 +48,8 @@ function doRegister($username,$password, $email){
 		return false;
 	}
 }
+
+//add to watchlist
 function doAddToWatchlist($user, $listingID){
 	$add = new connectdb();
 
@@ -52,6 +65,8 @@ function doAddToWatchlist($user, $listingID){
 		return false;
 	}
 }
+
+//remove from watchlist
 function doRemoveFromWatchlist($user, $listingID){
 	$remove = new connectdb();
 
@@ -67,6 +82,25 @@ function doRemoveFromWatchlist($user, $listingID){
 		return false;
 	}
 }
+
+//clear watchlist
+function doClearWatchlist($user){
+	$remove = new connectdb();
+
+	$output = $remove->clearWatchlist($user);
+
+	if($output){
+		echo "Removed Successfully!".PHP_EOL;
+		return true;
+	}
+	else{
+		echo "Error Removing!".PHP_EOL;
+		echo ($output).PHP_EOL;
+		return false;
+	}
+}
+
+//retrieve listings from watchlist
 function doRetrieveFromWatchlist($user){
 	$retrieve = new connectdb();
 
@@ -79,9 +113,11 @@ function doRetrieveFromWatchlist($user){
 	}
 	else{
 		echo "No listings retrieved!".PHP_EOL;
-		return false;
+		return "No listings";
 	}
 }
+
+//add skill
 function doAddSkill($user,$skill){
 	$add = new connectdb();
 
@@ -97,6 +133,8 @@ function doAddSkill($user,$skill){
 		return false;
 	}
 }
+
+//rewmove skill
 function doRemoveSkill($user,$skill){
 	$remove = new connectdb();
 
@@ -112,6 +150,8 @@ function doRemoveSkill($user,$skill){
 		return false;
 	}
 }
+
+//get skills
 function doGetSkills($user){
 	$retrieve = new connectdb();
 
@@ -127,6 +167,8 @@ function doGetSkills($user){
 		return false;
 	}
 }
+
+//get email
 function doGetEmail($user){
 	$retrieve = new connectdb();
 
@@ -143,6 +185,8 @@ function doGetEmail($user){
 	}
 }
 
+
+//route requests from server
 function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
@@ -171,6 +215,9 @@ function requestProcessor($request)
     case "removeFromWatchlist":
       $status = doRemoveFromWatchlist($request['user'], $request['listingID']);
       break;
+    case "clearWatchlist":
+      $status = doClearWatchlist($request['user']);
+      break;
     case "getListingsFromWatchlist":
       $status = doRetrieveFromWatchlist($request['user']);
       break;
@@ -184,8 +231,8 @@ function requestProcessor($request)
       $status = doGetSkills($request['user']);
       break;
   }
- 
-  return array('status' => $status,'message'=>'Server received request and processed');
+  writeLogsDB($status);
+  return array('status' => $status,'message'=>'Database server received request and processed');
 }
 
 //create new server

@@ -1,10 +1,20 @@
 #!/usr/bin/php
 <?php
+
+/*
+handles client creation for communication to specific servers
+
+@author  Alex Markenzon
+@since   September
+@version 5
+*/
+
 echo "ServerStarted!".PHP_EOL;
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 
+//routes requests from client
 function requestProcessor($request)
 {
   echo "Received Request!";	
@@ -31,6 +41,11 @@ function requestProcessor($request)
 		$response = $client->send_request($request);
 	break;
 	case "removeFromWatchlist":
+		$client = new rabbitMQClient("rabbitMQ_DB.ini","testServer");
+		//send data to database and store response
+		$response = $client->send_request($request);
+	break;
+	case "clearWatchlist":
 		$client = new rabbitMQClient("rabbitMQ_DB.ini","testServer");
 		//send data to database and store response
 		$response = $client->send_request($request);
@@ -78,7 +93,6 @@ function requestProcessor($request)
   }
   
   return $response;
-  //return array("stats" => '0', 'message'=>"Server received request and processed");
 }
 //create new rabbitmq server instance
 $server = new rabbitMQServer("rabbitMQ.ini","testServer");

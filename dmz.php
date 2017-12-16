@@ -1,11 +1,21 @@
 #!/usr/bin/php
 <?php
+include("writeLogs.php");
+/*
+handles dmz requests from the server
+
+@author  Alex Markenzon
+@since   October
+@version 5
+*/
+
 echo "ServerStarted!".PHP_EOL;
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 require_once("dmzFunctions.php");
 
+//routes requests from server
 function requestProcessor($request)
 {
   echo "received request".PHP_EOL;
@@ -33,6 +43,7 @@ function requestProcessor($request)
       break;
   }
   ///return $data;
+  writeLogsDMZ("Returned listings from DMZ");
   return $data;
 }
 

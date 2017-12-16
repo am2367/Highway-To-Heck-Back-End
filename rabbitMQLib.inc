@@ -1,4 +1,11 @@
 <?php
+/*
+Rabbit MQ classes and methods
+
+@author  DJ Kehoe
+@since   September
+@version 1
+*/
 
 require_once('get_host_info.inc');
 
