@@ -1,0 +1,9 @@
+StarterStopper.sh
+
+starterStopper.sh is a bash script used to find, kill, and restart several processes as part of the deployment server.
+
+The script begins by finding processes using ps -ef and grep to find the rabbitmqServer.php, dmz.php, and dbListener.php running programs. Once each of these is found, this is then grepped to awk which then takes the second position of the string which is the process ID. Then this is passed to kill 9 which kills the process. This runs for the above 3 programs
+
+After that both apache2 and the rabbitmq-server services are restarted.
+
+Following that we now start the 3 killed programs and run them detatced from the terminal using . &. this will run rabbitMQServer.php, dmz.php, and dbListener.php.
