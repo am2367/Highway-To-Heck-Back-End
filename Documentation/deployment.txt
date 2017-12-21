@@ -49,6 +49,17 @@ rollbackHeck
 
 this script takes no arguments and gets from the deployment server the latest working bundle and unpackages it.
 EX: $  rollbackHeck
+___________________
+
+1 Function Used
+
+deploy($argv)
+
+Located in deploymentFunctions.php
+
+Takes in a case entered by above script in the form of (command, version, path, status) to determine SQL function for inserting
+into database using if-else statements. The function using argv to order the multiple arguments given by the above scripts as an array. Command is the specific command that determines which if-else is used. Specifically package is given from packageHeck, extract given from installHeck, or rollback given from rollbackHeck. Version is specificied only in installHeck to determine which specific version of the system needs to be installed, latest defaulting to the most recent version. Path is the path name of the version and status is denote if the version is stable or not and is used for rollbackHeck to determine if a version is "good" to rollback to or not.
+
 
 
 
