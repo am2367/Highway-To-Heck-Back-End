@@ -1,0 +1,52 @@
+Database
+
+
+For the database there is a single database called login. Within the login database we are using 3 tables.
+
+skills
+userWatchList
+users
+
+
+The skills table has two fields. The first field is the user, and the second is the skill. This table uses a composite primary key consisting of both fields so that a user can have many skills listed. 
+
+The userWatchList table has two fields as well. The first field is user, the second field being listingID. This table also uses a composite primary key so that users can add multiple listings to their watchlist. 
+
+The users table has 3 fields. The first field is screenname, which holds the users created screenname. The second field is the password which has a type of varchar(255) to hold salted and hashed passwords. The third field is the email field which will hold the email address entered upon creation of a user.
+
+
+_________
+Scripts
+_________
+
+There is a file called backup.sh in the backups folder. This file has Read Write Access (700) for admin only, with no other users having permissions. Inside this bash script there are fields to enter the credentials for a server, as well as a database name. The first part of this script creates a variable called date in M D Y format. Then using mysqldump a command is generated to pass the supplied username and password to the command. On the same line, it will place the dumped file in the desirect backup path. The filename will be login-(date). For example a backup generated on christmas 2017 will read: login-122517 . Following this command, the bash script then uses sshpass to form a ssh connection with the deployment server and to use scp to copy the dumped file to the backup server for safe keeping. Lastly at the end of the script there is a line of code that will find all files in the backup path that are older than 30 days and delete them. 
+
+Note: This script is currently tied to a sudo crontab to run at 11:00am every day of the week.
+
+
+
+___________________
+dbFunctions.php.inc
+___________________
+
+In the dbfunctions.php.inc file there are several functions. The first is the db function that connects to the mysql database. this function uses connectdb, and takes several parameters such as ip address, username, password, and database name. If there is a connection error, the terminal will return the error and if not, it will display "correctly connected to database".
+
+function validateLogIn is used for authentication of users. The function is passed two variables being username and password. First these strings are escaped and then a select statement is used to pull the listing that matches the username entered. a while loop is used to loop through the response which should only be a single one. Then password checking occurs using the password_verify() function which is used when authenticating hashed & salted passwords. If the passwords match the while loop is broken and continues.
+
+Function register is used to create a new user in the database. this function takes 3 variables: username, password, and email. All three are escaped then put into a insert statement to insert the user entered data into the database. 
+
+Function addToWatchlist is used to add job listings to a users profile. The function takes 2 variables: user, and listingID. These are then put into an insert statement and passed to the database to create an entry.
+
+Function removeFromWatchlist takes 2 variables as well: user, and listingID. Instead of adding a listing to the users profile, this function is used to delete them from the database using a DELETE FROM sql statement. It does so by using both user and listingID in the statement so as to not delete all listings from a users profile.
+
+Function clearWatchlist is used to delete all listings from a users watchlist. This function only takes one variable: user. This function then forms a DELETE FROM statement, supplying only the username which will remove all entries from the database.
+
+Function retrieveFromWatchlist takes 1 variable: user. This function is used to retrieve all listings from the database using a SELECT statement and passing only the user parameter.
+
+Function addSkill takes two varaibles: user and skill. These are then passed to an INSERT INTO statement to add a user and the skill to the skills table of the database. 
+
+Function removeSkill takes two variables: user and skill. These are used to find and remove a skill from the users profile in the database. These two variables are passed to a DELETE FROM sql statement.
+
+Function getSkills takes only a single variable: user. This function is used to retrieve a list of all skills stored in the database by using a SELECT statement. 
+
+Function getEmail takes a single variable: user. This function queries the database to find the record that matches the user, and returns the user's email address.
