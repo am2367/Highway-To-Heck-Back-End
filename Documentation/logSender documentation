@@ -1,0 +1,4 @@
+logSender.sh 
+
+
+logSender is a simple bash script that uses sshpass with the -p parameter to pass the password to the command line. After the ssh connection is made, the logs.txt file is then copied to the deployment server using scp and supplying the destination username, ip address, and directory.
