@@ -34,7 +34,7 @@ public function validateLogin($username,$password)
 	while ($row = $response->fetch_assoc())
 	{
 		echo "checking password for $username".PHP_EOL;
-		if ($row["password"] == $pw)
+		if (password_verify($password, $row["password"]))
 		{
 			echo "passwords match for $username".PHP_EOL;
 			return 1;// password match
