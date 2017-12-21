@@ -1,0 +1,54 @@
+Deployment
+
+3 scripts used
+
+packageHeck
+installHeck
+rollbackHeck
+
+
+===================
+-----COMMANDS------
+===================
+to get these scripts to run as commands on the terminal you will need to edit your profile file.
+in the terminal with root privileges type in: vim .profile (or any text editor other than vim)
+at the end of the file type in: PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+then create a folder named bin in the directory home/user/
+this edits the profile file to also look at the bin folder to run a script by typing in their filename.
+
+then you need to give each script executable permissions with either the "chmod +x scriptNAME" command or "chmod 700 scriptNAME" command
+===================
+------SCRIPTS------
+===================
+___________________
+
+packageHeck
+
+this script bundles together the two folders git/it490f17 /var/www/html into a zip file and uploads it to the deployment server.
+this script can take 2 additional arguments(case sensitive).
+if no arguments are used it defaults to "working"
+if the "notworking" argument is used it marks the status as not working.
+EX: $  packageHeck notworking
+if the "QA" argument is used it marks the status as QA
+EX: $  packageHeck QA
+___________________
+
+installHeck
+
+this script gets the latest version of the bundle from the deployment server and extracts the folders to where they need to be
+this script can take additional 2 arguments(case sensitive).
+if no arguments are used it defaults to "latest" and downloads the newest file from the server.
+if the "QA" argument is used it downloads the latest build marked as QA from the server.
+EX: $  installHeck QA
+if the "V" argument is used it asks the user to type in a version number they wish to download and gets it from the server.
+EX: $  installHeck V
+
+___________________
+
+rollbackHeck
+
+this script takes no arguments and gets from the deployment server the latest working bundle and unpackages it.
+EX: $  rollbackHeck
+
+
+
