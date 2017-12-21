@@ -13,7 +13,7 @@ private $connectdb;
 
 public function __construct()
 {
-	$this->connectdb = new mysqli("127.0.0.1","root","201alex","login");//Your DB info here (localhost, mysql root, mysql pass, database)
+	$this->connectdb = new mysqli("127.0.0.1","root","it490","login");//Your DB info here (localhost, mysql root, mysql pass, database)
 
 	if ($this->connectdb->connect_errno != 0)
 	{
